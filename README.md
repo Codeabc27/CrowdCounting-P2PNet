@@ -697,14 +697,6 @@ Interested in:
 * Computer Vision
 * Generative AI
 * Data Science
-
----
-
-## 📫 Connect
-
-* GitHub: `Add your GitHub profile link`
-* LinkedIn: `Add your LinkedIn profile link`
-
 ---
 
 ## ⭐ Support

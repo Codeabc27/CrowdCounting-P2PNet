@@ -1,8 +1,3 @@
-# Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved
-"""
-Train and eval functions used in main.py
-Mostly copy-paste from DETR (https://github.com/facebookresearch/detr).
-"""
 import math
 import os
 import sys

@@ -12,6 +12,6 @@ a = Args()
 a.backbone = "vgg16_bn"
 a.row = 2
 a.line = 2
-print("Building model...")
+print("Building model...")    
 model = build_model(a)
 print("Built model type:", type(model))

@@ -15,7 +15,7 @@ class BackboneBase_VGG(nn.Module):
     def __init__(self, backbone: nn.Module, num_channels: int, name: str, return_interm_layers: bool):
         super().__init__()
         features = list(backbone.features.children())
-        if return_interm_layers:
+        if return_interm_layers:     
             if name == 'vgg16_bn':
                 self.body1 = nn.Sequential(*features[:13])
                 self.body2 = nn.Sequential(*features[13:23])

@@ -44,7 +44,7 @@ class RegressionModel(nn.Module):
 
         return out.contiguous().view(out.shape[0], -1, 2)
 
-# the network frmawork of the classification branch
+# the network frmawork of the classification branch    
 class ClassificationModel(nn.Module):
     def __init__(self, num_features_in, num_anchor_points=4, num_classes=80, prior=0.01, feature_size=256):
         super(ClassificationModel, self).__init__()

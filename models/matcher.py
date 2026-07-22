@@ -19,7 +19,7 @@ class HungarianMatcher_Crowd(nn.Module):
     def __init__(self, cost_class: float = 1, cost_point: float = 1):
         """Creates the matcher
 
-        Params:
+        Params:  
             cost_class: This is the relative weight of the foreground object
             cost_point: This is the relative weight of the L1 error of the points coordinates in the matching cost
         """

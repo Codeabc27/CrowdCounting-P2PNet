@@ -86,7 +86,7 @@ def make_layers(cfg, batch_norm=False, sync=False):
         else:
             conv2d = nn.Conv2d(in_channels, v, kernel_size=3, padding=1)
             if batch_norm:
-                if sync:
+                if sync:     
                     print("use sync backbone")
                     layers += [conv2d, nn.SyncBatchNorm(v), nn.ReLU(inplace=True)]
                 else:

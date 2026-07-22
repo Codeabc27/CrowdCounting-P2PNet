@@ -22,7 +22,7 @@
 
 <!-- Replace this with your GitHub-hosted demo video URL -->
 
-https://github.com/user-attachments/assets/REPLACE_WITH_YOUR_VIDEO_ID
+https://github.com/Codeabc27/CrowdCounting-P2PNet/tree/main/assets)
 
 ---
 

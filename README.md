@@ -1,164 +1,722 @@
-# P2PNet (ICCV2021 Oral Presentation)
+# 👥 Crowd Density Estimation using P2PNet
 
-This repository contains codes for the official implementation in PyTorch of **P2PNet** as described in [Rethinking Counting and Localization in Crowds: A Purely Point-Based Framework](https://arxiv.org/abs/2107.12746).
- 
-A brief introduction of P2PNet can be found at [机器之心 (almosthuman)](https://mp.weixin.qq.com/s?__biz=MzA3MzI4MjgzMw==&mid=2650827826&idx=3&sn=edd3d66444130fb34a59d08fab618a9e&chksm=84e5a84cb392215a005a3b3424f20a9d24dc525dcd933960035bf4b6aa740191b5ecb2b7b161&mpshare=1&scene=1&srcid=1004YEOC7HC9daYRYeUio7Xn&sharer_sharetime=1633675738338&sharer_shareid=7d375dccd3b2f9eec5f8b27ee7c04883&version=3.1.16.5505&platform=win#rd).
+<p align="center">
 
-The codes is tested with PyTorch 1.5.0. It may not run with other versions.
+**An AI-powered computer vision system for crowd counting, point-based person localization, and density heatmap generation.**
 
-## Visualized demos for P2PNet
-<img src="vis/congested1.png" width="1000"/>   
-<img src="vis/congested2.png" width="1000"/> 
-<img src="vis/congested3.png" width="1000"/> 
+<br/>
 
-## The network
-The overall architecture of the P2PNet. Built upon the VGG16, it firstly introduce an upsampling path to obtain fine-grained feature map. 
-Then it exploits two branches to simultaneously predict a set of point proposals and their confidence scores.
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-Deep%20Learning-ee4c2c?logo=pytorch)](https://pytorch.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-Web%20Application-ff4b4b?logo=streamlit)](https://streamlit.io/)
+[![OpenCV](https://img.shields.io/badge/OpenCV-Computer%20Vision-5c3ee8?logo=opencv)](https://opencv.org/)
+[![License](https://img.shields.io/badge/License-Educational-green)](#-license)
 
-<img src="vis/net.png" width="1000"/>   
+</p>
 
-## Comparison with state-of-the-art methods
-The P2PNet achieved state-of-the-art performance on several challenging datasets with various densities.
+---
 
-| Methods   | Venue     | SHTechPartA <br> MAE/MSE  |SHTechPartB <br> MAE/MSE | UCF_CC_50 <br> MAE/MSE | UCF_QNRF <br> MAE/MSE   |
-|:----:|:----:|:----:|:----:|:----:|:----:|
-CAN  | CVPR'19 | 62.3/100.0 | 7.8/12.2 | 212.2/**243.7** | 107.0/183.0 |
-Bayesian+ | ICCV'19 | 62.8/101.8 | 7.7/12.7 | 229.3/308.2 | 88.7/154.8 |
-S-DCNet  | ICCV'19 | 58.3/95.0 | 6.7/10.7 | 204.2/301.3 | 104.4/176.1 |
-SANet+SPANet  | ICCV'19 | 59.4/92.5 | 6.5/**9.9** | 232.6/311.7 | -/- |
-DUBNet  | AAAI'20 | 64.6/106.8 | 7.7/12.5 | 243.8/329.3 | 105.6/180.5 |
-SDANet | AAAI'20 | 63.6/101.8 | 7.8/10.2 | 227.6/316.4 | -/- |
-ADSCNet | CVPR'20 | <u>55.4</u>/97.7 | <u>6.4</u>/11.3 | 198.4/267.3 | **71.3**/**132.5**|
-ASNet   | CVPR'20 | 57.78/<u>90.13</u> | -/- | <u>174.84</u>/<u>251.63</u> | 91.59/159.71 |
-AMRNet  | ECCV'20 | 61.59/98.36 | 7.02/11.00 | 184.0/265.8 | 86.6/152.2 |
-AMSNet  | ECCV'20 | 56.7/93.4 | 6.7/10.2 | 208.4/297.3 | 101.8/163.2|
-DM-Count  | NeurIPS'20 | 59.7/95.7 | 7.4/11.8 | 211.0/291.5 | 85.6/<u>148.3</u>|
-**Ours** |- | **52.74**/**85.06** | **6.25**/**9.9** | **172.72**/256.18 | <u>85.32</u>/154.5 |
+## 🎥 Project Demo
 
-Comparison on the [NWPU-Crowd](https://www.crowdbenchmark.com/resultdetail.html?rid=81) dataset.
+> Upload a crowd image, run AI-powered analysis, visualize detected people, and generate an interpretable crowd density heatmap.
 
-| Methods   | MAE[O]  |MSE[O] | MAE[L] | MAE[S]   |
-|:----:|:----:|:----:|:----:|:----:|
-MCNN  | 232.5|714.6 | 220.9|1171.9 |
-SANet  | 190.6 | 491.4 | 153.8 | 716.3|
-CSRNet | 121.3 | 387.8 | 112.0 | <u>522.7</u> |
-PCC-Net  | 112.3 | 457.0 | 111.0 | 777.6 |
-CANNet  | 110.0 | 495.3 | 102.3 | 718.3|
-Bayesian+  | 105.4 | 454.2 | 115.8 | 750.5 |
-S-DCNet   | 90.2 | 370.5 | **82.9** | 567.8 |
-DM-Count  | <u>88.4</u> | 388.6 | 88.0 | **498.0** |
-**Ours** | **77.44**|**362** | <u>83.28</u>| 553.92 |
+<!-- Replace this with your GitHub-hosted demo video URL -->
 
-The overall performance for both counting and localization.
+https://github.com/user-attachments/assets/REPLACE_WITH_YOUR_VIDEO_ID
 
-|nAP$_{\delta}$|SHTechPartA| SHTechPartB | UCF_CC_50 | UCF_QNRF | NWPU_Crowd |
-|:----:|:----:|:----:|:----:|:----:|:----:|    
-$\delta=0.05$ | 10.9\% | 23.8\%  | 5.0\% | 5.9\% | 12.9\% | 
-$\delta=0.25$ | 70.3\% | 84.2\%  | 54.5\% | 55.4\% | 71.3\% |  
-$\delta=0.50$ | 90.1\% | 94.1\%  | 88.1\% | 83.2\% | 89.1\% | 
-$\delta=\{{0.05:0.05:0.50}\}$ | 64.4\% | 76.3\%  | 54.3\% | 53.1\% | 65.0\% |  
+---
 
-Comparison for the localization performance in terms of F1-Measure on NWPU.
+## 📌 Overview
 
-| Method| F1-Measure |Precision| Recall |
-|:----:|:----:|:----:|:----:|
-FasterRCNN  |  0.068 |  0.958 | 0.035 |
-TinyFaces |  0.567  |  0.529 | 0.611 |
-RAZ |   0.599 |  0.666 |  0.543|
-Crowd-SDNet |  0.637  | 0.651  | 0.624  |
-PDRNet |  0.653 | 0.675  | 0.633  |
-TopoCount | 0.692  | 0.683  | **0.701** |
-D2CNet | <u>0.700</u> | **0.741**  | 0.662 |
-**Ours** |**0.712** | <u>0.729</u>  | <u>0.695</u> |
+**Crowd Density Estimation using P2PNet** is a deep learning-based computer vision application designed to estimate the number of people present in crowded environments.
 
-## Installation
-* Clone this repo into a directory named P2PNET_ROOT
-* Organize your datasets as required
-* Install Python dependencies. We use python 3.6.5 and pytorch 1.5.0
+The system uses **P2PNet**, a point-based crowd counting architecture, to predict individual person locations instead of relying on traditional bounding-box detection.
+
+The detected person points are then processed to:
+
+* Estimate the total crowd count
+* Visualize individual detection points
+* Classify the crowd density level
+* Generate a visual density heatmap
+* Provide an interactive web-based analysis interface
+
+The application is built with **PyTorch** for deep learning inference and **Streamlit** for the user interface.
+
+---
+
+## 🎯 Problem Statement
+
+Traditional object detection approaches often struggle in highly crowded environments because of:
+
+* Severe person-to-person occlusion
+* Overlapping individuals
+* Extremely dense scenes
+* Small and partially visible people
+* Complex camera angles
+
+Bounding-box-based detectors may fail to accurately distinguish individuals in dense crowds.
+
+This project addresses the problem using a **point-based crowd counting approach**, where each detected person is represented by a point coordinate.
+
+---
+
+## 💡 Solution
+
+The system follows a simple and efficient pipeline:
+
+```text
+┌──────────────────────┐
+│   Upload Crowd Image │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│ Image Preprocessing  │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│       P2PNet         │
+│  Deep Learning Model │
+└──────────┬───────────┘
+           │
+           ▼
+┌──────────────────────┐
+│ Person Point         │
+│ Predictions          │
+└───────┬───────┬──────┘
+        │       │
+        ▼       ▼
+┌───────────┐ ┌───────────────┐
+│ Crowd     │ │ Density       │
+│ Count     │ │ Heatmap       │
+└─────┬─────┘ └───────┬───────┘
+      │               │
+      └───────┬───────┘
+              ▼
+     ┌──────────────────┐
+     │ Streamlit Result │
+     │    Dashboard     │
+     └──────────────────┘
 ```
+
+---
+
+## ✨ Key Features
+
+### 👥 Crowd Counting
+
+Estimates the number of people present in the uploaded image using P2PNet point predictions.
+
+### 📍 Point-Based Person Localization
+
+Visualizes predicted person locations directly on the original image.
+
+### 🔥 Density Heatmap Generation
+
+Generates a heatmap that visually represents areas of higher crowd concentration.
+
+### 📊 Crowd Density Classification
+
+The system classifies crowd density based on the estimated count.
+
+| Estimated Count | Density Classification |
+| --------------: | ---------------------- |
+|               0 | No Crowd               |
+|            1–19 | Low Density            |
+|           20–49 | Medium Density         |
+|           50–99 | High Density           |
+|            100+ | Very High Density      |
+
+### ⚡ CPU and GPU Inference
+
+The application automatically selects the available computation device:
+
+* NVIDIA CUDA GPU
+* CPU
+
+### 🖥️ Interactive Web Interface
+
+The Streamlit application provides:
+
+* Image upload
+* Image preview
+* Crowd analysis
+* Count visualization
+* Density classification
+* Detection point visualization
+* Heatmap generation
+* Heatmap download
+
+---
+
+## 🧠 Model Architecture
+
+### P2PNet
+
+P2PNet is a point-based crowd counting model designed specifically for dense crowd scenes.
+
+Unlike conventional object detection models that predict bounding boxes, P2PNet predicts points representing individual people.
+
+### Traditional Object Detection
+
+```text
+Image
+  │
+  ▼
+Bounding Box Detection
+  │
+  ▼
+Person Boxes
+  │
+  ▼
+Count
+```
+
+### P2PNet Approach
+
+```text
+Image
+  │
+  ▼
+P2PNet
+  │
+  ▼
+Person Point Predictions
+  │
+  ▼
+Point Count
+  │
+  ▼
+Crowd Density Estimation
+```
+
+This approach is particularly useful when individuals are heavily occluded or packed closely together.
+
+---
+
+## 🏗️ System Architecture
+
+```text
+                 ┌─────────────────────┐
+                 │   User Uploads      │
+                 │   Crowd Image       │
+                 └──────────┬──────────┘
+                            │
+                            ▼
+                 ┌─────────────────────┐
+                 │ Streamlit Frontend  │
+                 └──────────┬──────────┘
+                            │
+                            ▼
+                 ┌─────────────────────┐
+                 │ Image Preprocessing │
+                 │   PIL / OpenCV      │
+                 └──────────┬──────────┘
+                            │
+                            ▼
+                 ┌─────────────────────┐
+                 │    P2PNet Model     │
+                 │    PyTorch Runtime  │
+                 └──────────┬──────────┘
+                            │
+                            ▼
+                 ┌─────────────────────┐
+                 │ Point Predictions   │
+                 └──────────┬──────────┘
+                            │
+              ┌─────────────┴─────────────┐
+              ▼                           ▼
+     ┌────────────────┐          ┌────────────────┐
+     │ Crowd Counting │          │ Heatmap Engine  │
+     └───────┬────────┘          └───────┬────────┘
+             │                           │
+             └─────────────┬─────────────┘
+                           ▼
+                 ┌─────────────────────┐
+                 │ Result Visualization│
+                 │  & Download Output  │
+                 └─────────────────────┘
+```
+
+---
+
+## 📁 Project Structure
+
+```text
+CrowdCounting-P2PNet/
+│
+├── app.py
+│   └── Streamlit application and user interface
+│
+├── inference.py
+│   └── Model loading and inference pipeline
+│
+├── heatmap.py
+│   └── Crowd density heatmap generation
+│
+├── requirements.txt
+│   └── Python dependencies
+│
+├── README.md
+│   └── Project documentation
+│
+├── .gitignore
+│   └── Ignored files and directories
+│
+├── assets/
+│   └── Project screenshots and demo assets
+│
+└── weights/
+    └── SHTechA.pth
+        └── Trained model checkpoint
+```
+
+> **Note:** Large model weight files should not be committed directly to GitHub.
+
+---
+
+## 🛠️ Technology Stack
+
+| Category                | Technology   |
+| ----------------------- | ------------ |
+| Programming Language    | Python       |
+| Deep Learning Framework | PyTorch      |
+| Model Architecture      | P2PNet       |
+| Computer Vision         | OpenCV       |
+| Numerical Computing     | NumPy        |
+| Image Processing        | Pillow       |
+| Visualization           | Matplotlib   |
+| Web Application         | Streamlit    |
+| Scientific Computing    | SciPy        |
+| Version Control         | Git & GitHub |
+
+---
+
+## ⚙️ Installation
+
+### Prerequisites
+
+Make sure the following are installed:
+
+* Python 3.10 or higher
+* Git
+* pip
+* Optional: NVIDIA GPU with CUDA support
+
+---
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/YOUR_USERNAME/CrowdCounting-P2PNet.git
+```
+
+Navigate to the project directory:
+
+```bash
+cd CrowdCounting-P2PNet
+```
+
+---
+
+### 2. Create a Virtual Environment
+
+#### Windows
+
+```bash
+python -m venv venv
+```
+
+Activate the environment:
+
+```bash
+venv\Scripts\activate
+```
+
+#### Linux/macOS
+
+```bash
+python3 -m venv venv
+```
+
+Activate:
+
+```bash
+source venv/bin/activate
+```
+
+---
+
+### 3. Install Dependencies
+
+```bash
 pip install -r requirements.txt
 ```
 
-## Organize the counting dataset
-We use a list file to collect all the images and their ground truth annotations in a counting dataset. When your dataset is organized as recommended in the following, the format of this list file is defined as:
-```
-train/scene01/img01.jpg train/scene01/img01.txt
-train/scene01/img02.jpg train/scene01/img02.txt
-...
-train/scene02/img01.jpg train/scene02/img01.txt
-```
+---
 
-### Dataset structures:
-```
-DATA_ROOT/
-        |->train/
-        |    |->scene01/
-        |    |->scene02/
-        |    |->...
-        |->test/
-        |    |->scene01/
-        |    |->scene02/
-        |    |->...
-        |->train.list
-        |->test.list
-```
-DATA_ROOT is your path containing the counting datasets.
+## 📦 Dependencies
 
-### Annotations format
-For the annotations of each image, we use a single txt file which contains one annotation per line. Note that indexing for pixel values starts at 0. The expected format of each line is:
-```
-x1 y1
-x2 y2
-...
+Example `requirements.txt`:
+
+```text
+torch
+torchvision
+numpy
+opencv-python
+Pillow
+streamlit
+matplotlib
+scipy
 ```
 
-## Training
+Install manually if required:
 
-The network can be trained using the `train.py` script. For training on SHTechPartA, use
-
-```
-CUDA_VISIBLE_DEVICES=0 python train.py --data_root $DATA_ROOT \
-    --dataset_file SHHA \
-    --epochs 3500 \
-    --lr_drop 3500 \
-    --output_dir ./logs \
-    --checkpoints_dir ./weights \
-    --tensorboard_dir ./logs \
-    --lr 0.0001 \
-    --lr_backbone 0.00001 \
-    --batch_size 8 \
-    --eval_freq 1 \
-    --gpu_id 0
-```
-By default, a periodic evaluation will be conducted on the validation set.
-
-## Testing
-
-A trained model (with an MAE of **51.96**) on SHTechPartA is available at "./weights", run the following commands to launch a visualization demo:
-
-```
-CUDA_VISIBLE_DEVICES=0 python run_test.py --weight_path ./weights/SHTechA.pth --output_dir ./logs/
+```bash
+pip install torch torchvision numpy opencv-python Pillow streamlit matplotlib scipy
 ```
 
-## Acknowledgements
+---
 
-- Part of codes are borrowed from the [C^3 Framework](https://github.com/gjy3035/C-3-Framework).
-- We refer to [DETR](https://github.com/facebookresearch/detr) to implement our matching strategy.
+## 🧠 Model Weights
 
+The application requires a trained P2PNet model checkpoint.
 
-## Citing P2PNet
+Expected path:
 
-If you find P2PNet is useful in your project, please consider citing us:
-
-```BibTeX
-@inproceedings{song2021rethinking,
-  title={Rethinking Counting and Localization in Crowds: A Purely Point-Based Framework},
-  author={Song, Qingyu and Wang, Changan and Jiang, Zhengkai and Wang, Yabiao and Tai, Ying and Wang, Chengjie and Li, Jilin and Huang, Feiyue and Wu, Yang},
-  journal={Proceedings of the IEEE/CVF International Conference on Computer Vision},
-  year={2021}
-}
+```text
+weights/SHTechA.pth
 ```
 
-## Related works from Tencent Youtu Lab
-- [AAAI2021] To Choose or to Fuse? Scale Selection for Crowd Counting. ([paper link](https://ojs.aaai.org/index.php/AAAI/article/view/16360) & [codes](https://github.com/TencentYoutuResearch/CrowdCounting-SASNet))
-- [ICCV2021] Uniformity in Heterogeneity: Diving Deep into Count Interval Partition for Crowd Counting. ([paper link](https://arxiv.org/abs/2107.12619) & [codes](https://github.com/TencentYoutuResearch/CrowdCounting-UEPNet))
+Expected structure:
+
+```text
+weights/
+└── SHTechA.pth
+```
+
+The model is loaded during inference using the project inference pipeline.
+
+> ⚠️ Model weights are excluded from GitHub because large binary files can significantly increase repository size.
+
+### Model Weight Setup
+
+1. Download the trained model checkpoint.
+2. Create the `weights/` directory.
+3. Place the model file inside it.
+4. Verify that the filename matches the expected path.
+
+---
+
+## ▶️ Running the Application
+
+Start the Streamlit application:
+
+```bash
+streamlit run app.py
+```
+
+The application will be available at:
+
+```text
+http://localhost:8501
+```
+
+---
+
+## 🖥️ Application Workflow
+
+### Step 1: Upload Image
+
+Upload a crowd image in one of the supported formats:
+
+* JPG
+* JPEG
+* PNG
+
+### Step 2: Preview
+
+The uploaded image is displayed in the Streamlit interface.
+
+### Step 3: Analyze
+
+Click:
+
+```text
+Analyze Crowd
+```
+
+The P2PNet model performs inference on the uploaded image.
+
+### Step 4: View Results
+
+The system displays:
+
+* Estimated number of people
+* Crowd density classification
+* Processing device
+* Detection point visualization
+* Density heatmap
+
+### Step 5: Download Output
+
+The generated heatmap can be downloaded as:
+
+```text
+crowd_density_heatmap.png
+```
+
+---
+
+## 📊 Output Example
+
+Example output:
+
+```text
+Estimated People: 87
+
+Density Level: High Density
+
+Processing Device: CUDA
+```
+
+The application produces two primary visual outputs:
+
+### Detection Point Visualization
+
+Each detected individual is represented by a point on the original image.
+
+### Density Heatmap
+
+The heatmap represents the spatial concentration of detected people.
+
+Higher-intensity regions indicate areas with greater estimated crowd concentration.
+
+---
+
+## 📈 Density Classification Logic
+
+The current classification system is based on the estimated crowd count:
+
+```text
+Count = 0
+        │
+        ▼
+    No Crowd
+
+Count = 1–19
+        │
+        ▼
+   Low Density
+
+Count = 20–49
+        │
+        ▼
+ Medium Density
+
+Count = 50–99
+        │
+        ▼
+  High Density
+
+Count >= 100
+        │
+        ▼
+Very High Density
+```
+
+---
+
+## 🔬 Technical Pipeline
+
+```text
+1. Image Upload
+       │
+       ▼
+2. Image Decoding
+       │
+       ▼
+3. Image Preprocessing
+       │
+       ▼
+4. Tensor Conversion
+       │
+       ▼
+5. P2PNet Inference
+       │
+       ▼
+6. Point Prediction Filtering
+       │
+       ▼
+7. Crowd Count Calculation
+       │
+       ▼
+8. Density Classification
+       │
+       ▼
+9. Heatmap Generation
+       │
+       ▼
+10. Result Visualization
+```
+
+---
+
+## 🚀 Future Roadmap
+
+### Phase 1 — Application Improvements
+
+* [ ] Improved result dashboard
+* [ ] Image comparison mode
+* [ ] Custom density thresholds
+* [ ] Enhanced visualization controls
+
+### Phase 2 — Real-Time Monitoring
+
+* [ ] Video upload support
+* [ ] Webcam integration
+* [ ] CCTV stream support
+* [ ] Real-time crowd counting
+
+### Phase 3 — Intelligent Alerting
+
+* [ ] Crowd threshold alerts
+* [ ] Overcrowding notifications
+* [ ] Region-based monitoring
+* [ ] Safety monitoring dashboard
+
+### Phase 4 — Production Deployment
+
+* [ ] REST API integration
+* [ ] Docker containerization
+* [ ] Cloud deployment
+* [ ] Model optimization
+* [ ] GPU inference optimization
+* [ ] Monitoring and logging
+
+---
+
+## ⚠️ Limitations
+
+The performance of the model may be affected by:
+
+* Low-resolution images
+* Severe image blur
+* Extreme occlusion
+* Unusual camera perspectives
+* Poor lighting conditions
+* Domain differences between training and deployment images
+
+For production use, the model should be evaluated and potentially fine-tuned on data representative of the target environment.
+
+---
+
+## 🔒 Security and Data Privacy
+
+This application processes uploaded images for inference.
+
+For production deployment:
+
+* Avoid storing uploaded images unnecessarily.
+* Implement secure file validation.
+* Restrict maximum upload size.
+* Use secure deployment practices.
+* Avoid logging sensitive image data.
+* Apply appropriate access controls.
+
+---
+
+## 🧪 Testing Recommendations
+
+The system should be tested using images with different:
+
+* Crowd densities
+* Camera angles
+* Lighting conditions
+* Image resolutions
+* Occlusion levels
+* Background environments
+
+Recommended evaluation metrics for crowd counting models include:
+
+* Mean Absolute Error (MAE)
+* Root Mean Squared Error (RMSE)
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome.
+
+### Contribution Workflow
+
+```bash
+# Fork the repository
+
+# Create a feature branch
+git checkout -b feature/your-feature
+
+# Make your changes
+
+# Commit your changes
+git commit -m "Add: your feature description"
+
+# Push the branch
+git push origin feature/your-feature
+
+# Open a Pull Request
+```
+
+Please ensure that contributions:
+
+* Follow clean coding practices.
+* Include appropriate documentation.
+* Do not commit model weights or sensitive files.
+* Maintain project functionality.
+
+---
+
+## 📄 License
+
+This project is intended for educational, research, and demonstration purposes.
+
+---
+
+## 👨‍💻 Author
+
+### SASI R
+
+**AI/ML Engineer | Artificial Intelligence & Data Science**
+
+Interested in:
+
+* Artificial Intelligence
+* Machine Learning
+* Deep Learning
+* Computer Vision
+* Generative AI
+* Data Science
+
+---
+
+## 📫 Connect
+
+* GitHub: `Add your GitHub profile link`
+* LinkedIn: `Add your LinkedIn profile link`
+
+---
+
+## ⭐ Support
+
+If you find this project useful, consider giving the repository a ⭐ on GitHub.
+
+Your support is appreciated!
+
+---
+
+<p align="center">
+
+**Built with Python, PyTorch, P2PNet, and Streamlit**
+
+</p>
